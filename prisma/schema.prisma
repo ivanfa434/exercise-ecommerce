@@ -19,14 +19,14 @@ model Sample {
 
 model User {
   id        Int       @id @default(autoincrement())
-  fullName  String
+  name      String
   email     String    @unique
   role      Role      @default(USER)
   password  String
   deletedAt DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  stores     Store[]
+  stores    Store[]
 
   @@map("users")
 }
@@ -44,20 +44,22 @@ model Store {
   user      User      @relation(fields: [userId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  products   Product[]
+  products  Product[]
 
   @@map("stores")
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
+  slug      String    @unique
   name      String
   price     Int
   stock     Int
   storeId   Int
-  store     Store    @relation(fields: [storeId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  store     Store     @relation(fields: [storeId], references: [id])
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("products")
 }
